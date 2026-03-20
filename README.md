@@ -1,33 +1,59 @@
+![C++](https://img.shields.io/badge/Language-Python-blue.svg)
+![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 # Desktop Sticky Notes APP
 
-![Screenshot](放你的截圖連結在這裡.png)
+**A desktop sticky note application built with Python and Tkinter**
 
-A sleek, minimalist, and feature-rich desktop sticky note application built with Python and Tkinter. Designed to be a true "sticky note," it stays silently on your desktop layer without cluttering your taskbar or obstructing other active applications.
+---
 
-## ✨ Key Features
+##  Key Features
 
-### 📝 Smart Task Management
-* **Live Drag & Drop (☰)**: Instantly reorder your tasks by dragging the handle. The active row is highlighted during dragging, and positions update in real-time.
-* **Smart Deadline Tracking (📅)**: Click the calendar icon to stamp today's date. **Dynamic Auto-Update**: If you manually edit the date (e.g., `2026/3/22`), the app will automatically calculate and update the correct day of the week `(Sun)` for you!
-* **Sub-Notes (+ / -)**: Expand a hidden text area under any task for detailed descriptions or sub-tasks.
-* **Quick Delete (□)**: Remove any task instantly. The list will auto-adjust.
-* **One-Click Reset (🗑)**: Clear all tasks and start fresh with a single click (Optimized bold UI for better visibility).
+### Smart Task Management
+| Icon | Name | Action |
+| :---: | :--- | :--- |
+| **Top Bar** | **Drag Handle** | Click and drag to move the note. |
+| `✖` | **Close** | Closes the application. *(Hidden when locked)* |
+| `🔓` / `🔒` | **Lock / Unlock** | Pins the window in place. |
+| `🗑` | **Clear All** | Deletes all current tasks. |
+| `☰` | **Reorder** | Click and drag up/down to reorder tasks instantly. |
+| `□` | **Delete Row** | Deletes the specific task row. |
+| `+` / `-` | **Sub-note** | Opens/Closes a hidden text area. |
+| `💬` | **New Group** | Creates a new note group. |
+| `📅` | **Date** | Adds today's deadline date. |
+| `⇲` | **Resize** | Drag to resize the window. *(Hidden when locked)* |
 
-### 🪟 Intelligent Window Controls
-* **Frameless & Taskbar-Hidden**: True desktop integration with no OS borders or taskbar icons.
-* **Bottom Layer Display**: Stays pinned to the desktop layer, ensuring it never blocks your browser or media players.
-* **Safe Lock Mode (🔓 / 🔒)**: Pin the note in place. When locked, it disables dragging, hides the resize grip, and **completely hides the close button (✖)** to prevent accidental data loss.
-* **Custom Resizing (⇲)**: Drag the bottom-right corner to adjust the window size freely.
-* **Hover UI Effects**: Smooth color transitions when hovering over control buttons for a modern feel.
+### Advanced Configurations
+* **Persistent Data**: Automatically saves metadata to a local `appdata.json`
+  > appdata.json automatically appears when the APP starts
+* **Group Management**: Groups of different colors can be used to categorize different tasks.
+  > Right‑click the icon to delete or rename.
+* **Privacy Lock**: After 30 seconds of inactivity, the app hides content to protect your privacy.
+  > Can be password-protected.
+* **`autostart`**: Defaults `true`.
+  * `true` :  the app automatically start when your PC boots up.
+  * `false` : disable the function
+  > Can be configured in appdata.json
+* **`password`**: Defaults `""` (empty).
+  Enter a password string to enable the **Privacy Lock**. 
+  > Can be configured in appdata.json
+   
+---
 
-### 💾 Auto-Save Memory
-* **Persistent Data**: Automatically saves your tasks, dates, sub-notes, window position, window size, and lock state to a local `note_data.json` file. Everything restores perfectly upon restart.
-
-## 🚀 How to Run (Development)
-
-1. Ensure you have **Python 3.x** installed.
-2. Clone this repository to your local machine.
-3. Run the script via terminal:
+##  How to Run 
+* **Prerequisite**
+  * Ensure you have **Python 3.x** installed on your system.
+  * Git (winget install --id Git.Git -e --source winget)
+* **Quick start**
    ```bash
-   python sticky_note.py
+   git clone https://github.com/hsungo/Stickynote.git
+   cd Stickynote
+   pip install pyinstaller
+   pyinstaller --noconsole --onefile noteapp.py
+   rm -r build
+   rm *.spec
+   cd dist
+   ./noteapp.exe
    ```
+---
+
