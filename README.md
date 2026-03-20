@@ -19,13 +19,15 @@
 | `☰` | **Reorder** | Click and drag up/down to reorder tasks instantly. |
 | `□` | **Delete Row** | Deletes the specific task row. |
 | `+` / `-` | **Sub-note** | Opens/Closes a hidden text area. |
-| `💬` | **New Tab** | Creates a new note group. |
+| `💬` | **New Group** | Creates a new note group. |
 | `📅` | **Date** | Adds today's deadline date. |
 | `⇲` | **Resize** | Drag to resize the window. *(Hidden when locked)* |
 
 ### Advanced Configurations
-* **Persistent Data**: Automatically saves metadata to a local `note_data.json`
-  > Everything restores perfectly upon restart.
+* **Persistent Data**: Automatically saves metadata to a local `appdata.json`
+  > appdata.json automatically appears when the APP starts
+* **Group Management**: Groups of different colors can be used to categorize different tasks.
+  > Right‑click the icon to delete or rename.
 * **Privacy Lock**: After 30 seconds of inactivity, the app hides content to protect your privacy.
   > Can be password-protected.
 * **`autostart`**: Defaults `true`.
