@@ -28,7 +28,7 @@
   
 ---
 
-## 🚀 How to Run (Development)
+##  How to Run 
 * **Prerequisite**
   * Ensure you have **Python 3.x** installed on your system.
 * **Quick start**
@@ -42,6 +42,10 @@
    cd dist
    ./noteapp
    ```
+---
 
-
+## Future Work
+- [ ] multi category
+- [ ] color change
+- [ ] 
    
