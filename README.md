@@ -26,9 +26,16 @@
 ### Advanced Configurations
 * **Persistent Data**: Automatically saves metadata to a local `note_data.json`
   > Everything restores perfectly upon restart.
-* **`autostart` (true/false)**: Defaults to `true`. When set to true, the app automatically writes itself to the Windows Registry to launch silently when your PC boots up. Change to `false` to disable auto-start.
-* **`password` (string)**: Defaults to `""` (empty). Enter a password string (e.g., `"password": "123"`) to enable the **Privacy Lock**. If enabled, the app will hide your notes after 30 seconds of inactivity and require this password to unlock.
-* **Idle Privacy Lock**: After 30 seconds of inactivity, the app hides your tasks and displays a "to do list" button to protect your privacy. (Can be password-protected via JSON).   
+* **Privacy Lock**: After 30 seconds of inactivity, the app hides content to protect your privacy.
+  > Can be password-protected.
+* **`autostart`**: Defaults `true`.
+  * `true` :  the app automatically start when your PC boots up.
+  * `false` : disable the function
+  > Can be configured in appdata.json
+* **`password`**: Defaults `""` (empty).
+  Enter a password string to enable the **Privacy Lock**. 
+  > Can be configured in appdata.json
+   
 ---
 
 ##  How to Run 
@@ -48,8 +55,3 @@
    ```
 ---
 
-## Future Work
-- [ ] multi category
-- [ ] color change
-- [x] TBD
-   
