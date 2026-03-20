@@ -31,6 +31,7 @@
 ##  How to Run 
 * **Prerequisite**
   * Ensure you have **Python 3.x** installed on your system.
+  * Git (winget install --id Git.Git -e --source winget)
 * **Quick start**
    ```bash
    git clone https://github.com/hsungo/Stickynote.git
@@ -47,5 +48,5 @@
 ## Future Work
 - [ ] multi category
 - [ ] color change
-- [ ] 
+- [x] TBD
    
