@@ -33,7 +33,7 @@
   * Ensure you have **Python 3.x** installed on your system.
 * **Quick start**
    ```bash
-   git clonehttps://github.com/hsungo/Stickynote.git
+   git clone https://github.com/hsungo/Stickynote.git
    cd Stickynote
    pip install pyinstaller
    pyinstaller --noconsole --onefile noteapp.py
