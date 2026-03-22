@@ -1,4 +1,4 @@
-![C++](https://img.shields.io/badge/Language-Python-blue.svg)
+![Python](https://img.shields.io/badge/Language-Python-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 # Desktop Sticky Notes APP
