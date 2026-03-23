@@ -32,7 +32,12 @@ class StickyNote:
         
         #initial setup
         self.is_locked = False
-        self.save_file = "appdata.json" 
+        if getattr(sys, 'frozen', False):
+            base_dir = os.path.dirname(sys.executable)
+        else:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            
+        self.save_file = os.path.join(base_dir, "appdata.json")
         self.dragged_row = None 
 
         self.current_group = "General"
@@ -58,8 +63,22 @@ class StickyNote:
         self.clear_btn.config(font=("Segoe UI Symbol", 13, "bold"), fg="#555555")
         self.clear_btn.pack(side=tk.RIGHT, padx=2)
 
-        self.list_frame = tk.Frame(self.window, bg=self.bg_color)
-        self.list_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
+        self.list_container = tk.Frame(self.window, bg=self.bg_color)
+        self.list_container.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
+
+        self.canvas = tk.Canvas(self.list_container, bg=self.bg_color, highlightthickness=0)
+        self.scrollbar = tk.Scrollbar(self.list_container, orient="vertical", command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        self.list_frame = tk.Frame(self.canvas, bg=self.bg_color)
+        self.canvas_window = self.canvas.create_window((0, 0), window=self.list_frame, anchor="nw")
+
+        self.list_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+        self.canvas.bind("<Configure>", lambda e: self.canvas.itemconfig(self.canvas_window, width=e.width - 20))
+        
+        self.window.bind("<MouseWheel>", lambda e: self.canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
 
         self.grip = tk.Label(self.window, text="⇲", bg=self.bg_color, fg=self.icon_color, cursor="size_nw_se")
         self.grip.place(relx=1.0, rely=1.0, anchor="se")
@@ -82,6 +101,20 @@ class StickyNote:
         self.window.bind("<Any-ButtonPress>", self.reset_timer)
         self.window.bind("<Motion>", self.reset_timer)
         self.reset_timer()
+        self.window.bind("<Enter>", self.show_scrollbar)
+        self.window.bind("<Leave>", self.hide_scrollbar)
+
+    def show_scrollbar(self, event=None):
+        self.scrollbar.place(relx=1.0, rely=0.0, relheight=1.0, anchor="ne")
+
+    def hide_scrollbar(self, event=None):
+        x, y = self.window.winfo_pointerxy()
+        x0 = self.window.winfo_rootx()
+        y0 = self.window.winfo_rooty()
+        x1 = x0 + self.window.winfo_width()
+        y1 = y0 + self.window.winfo_height()
+        if not (x0 <= x <= x1 and y0 <= y <= y1):
+            self.scrollbar.place_forget() 
 
     def create_btn(self, parent, text, command):
         btn = tk.Button(parent, text=text, bg=self.bg_color, fg=self.icon_color, 
@@ -129,6 +162,8 @@ class StickyNote:
         self.title_bar.configure(bg=self.bg_color)
         self.tab_frame.configure(bg=self.bg_color)
         self.control_frame.configure(bg=self.bg_color)
+        self.list_container.configure(bg=self.bg_color)
+        self.canvas.configure(bg=self.bg_color)
         self.list_frame.configure(bg=self.bg_color)
         self.grip.configure(bg=self.bg_color)
         self.close_btn.configure(bg=self.bg_color)
@@ -289,6 +324,37 @@ class StickyNote:
 
     def stop_drag_row(self, event):
         if self.dragged_row is None: return
+        
+        # 取得滑鼠放開時的座標，找出下方的元件
+        x, y = self.window.winfo_pointerxy()
+        target_widget = self.window.winfo_containing(x, y)
+        
+        target_group = None
+        if target_widget and target_widget.master == self.tab_frame:
+            btn_text = target_widget.cget("text")
+            if btn_text in self.groups and btn_text != self.current_group:
+                target_group = btn_text
+                
+        if target_group:
+            item_data = {
+                "main": self.dragged_row.entry.get(),
+                "sub": self.dragged_row.sub_text.get("1.0", tk.END).strip(),
+                "sub_open": self.dragged_row.is_sub_open,
+                "date": self.dragged_row.date_entry.get() if self.dragged_row.date_entry.winfo_manager() == "pack" else ""
+            }
+            
+            if "items" not in self.groups[target_group]:
+                self.groups[target_group]["items"] = []
+            self.groups[target_group]["items"].append(item_data)
+            
+            self.dragged_row.destroy()
+            if len(self.list_frame.winfo_children()) == 0:
+                self.add_row()
+                
+            self.dragged_row = None
+            self.save_data()
+            return 
+        
         self.set_row_highlight(self.dragged_row, False)
         self.dragged_row = None 
         self.save_data()        
@@ -439,7 +505,7 @@ class StickyNote:
 
     def hide_content(self):
         self.title_bar.pack_forget()
-        self.list_frame.pack_forget()
+        self.list_container.pack_forget()
         self.grip.place_forget()
 
         self.privacy_frame = tk.Frame(self.window, bg=self.bg_color)
@@ -471,7 +537,7 @@ class StickyNote:
         self.privacy_frame.destroy()
 
         self.title_bar.pack(fill=tk.X, pady=(2, 0))
-        self.list_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
+        self.list_container.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
         if not self.is_locked:
             self.grip.place(relx=1.0, rely=1.0, anchor="se")
 
