@@ -53,6 +53,9 @@
    rm -r build
    rm *.spec
    cd dist
+   mv noteapp.exe ..
+   cd ..
+   rm -r dist
    ./noteapp.exe
    ```
 ---
